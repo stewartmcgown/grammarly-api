@@ -1,2 +1,3 @@
 # grammarly-api
-TypeScript client for the Grammarly API
+
+Client for the Grammarly API
