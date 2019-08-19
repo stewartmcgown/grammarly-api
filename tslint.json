@@ -5,6 +5,7 @@
     // TODO: allow devDependencies only in **/*.spec.ts files:
     // waiting on https://github.com/palantir/tslint/pull/3708
     "no-implicit-dependencies": [true, "dev"],
+    "object-literal-sort-keys": false,
 
     /* tslint-immutable rules */
     // Recommended built-in rules
@@ -13,22 +14,12 @@
     "typedef": [true, "call-signature"],
 
     // Immutability rules
-    "readonly-keyword": true,
-    "readonly-array": true,
     "no-let": true,
-    "no-object-mutation": true,
     "no-delete": true,
     "no-method-signature": true,
 
-    // Functional style rules
-    "no-this": true,
-    "no-class": true,
-    "no-mixed-interface": true,
-    "no-expression-statement": [
-      true,
-      { "ignore-prefix": ["console.", "process.exit"] }
-    ],
-    "no-if-statement": true
     /* end tslint-immutable rules */
+
+    "no-console": false
   }
 }
