@@ -1,10 +1,5 @@
 import WebSocket from 'ws';
-
-export const CONSTANTS = {
-  origin: 'chrome-extension://kbfnbcaeplbcioakkpcpgfkobkghlhen',
-  endpoint: 'wss://capi.grammarly.com/freews',
-  host: 'capi.grammarly.com'
-};
+import env from './env';
 
 export interface Headers extends StringObject {
   'User-Agent': string;
@@ -47,7 +42,7 @@ export function buildHeaders(Cookie: string): Headers {
     'Cache-Control': 'no-cache',
     Connection: 'Upgrade',
     Cookie,
-    Host: CONSTANTS.host,
+    Host: env.host,
     Pragma: 'no-cache',
     Upgrade: 'websocket',
     'User-Agent':
@@ -65,7 +60,7 @@ export function buildWSOptions(): WebSocket.ClientOptions {
 
   return {
     headers: buildHeaders(cookie),
-    origin: CONSTANTS.origin
+    origin: env.origin
   };
 }
 
@@ -81,7 +76,7 @@ export function connect(
 ): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
     const server = new WebSocket(
-      url || CONSTANTS.endpoint,
+      url || env.endpoint,
       options || buildWSOptions()
     );
     server.onopen = () => {
