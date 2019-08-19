@@ -10,7 +10,8 @@ export interface Headers extends StringObject {
   'Cache-Control': string;
   'Accept-Encoding': string;
   'Accept-Language': string;
-  // Cookie: string;
+  Origin: string;
+  Cookie: string;
 }
 
 export interface CookieOptions {
@@ -25,7 +26,7 @@ export interface CookieOptions {
 
 export function buildCookieString(pairs: CookieOptions): string {
   return Object.keys(pairs).reduce(
-    (str: string, key: string) => str + key + '=' + (pairs as any)[key] + ';',
+    (str: string, key: string) => str + key + '=' + (pairs as any)[key] + '; ',
     ''
   );
 }
@@ -43,6 +44,7 @@ export function buildHeaders(Cookie: string): Headers {
     Connection: 'Upgrade',
     Cookie,
     Host: env.host,
+    Origin: env.origin,
     Pragma: 'no-cache',
     Upgrade: 'websocket',
     'User-Agent':
@@ -55,9 +57,10 @@ export function buildHeaders(Cookie: string): Headers {
  */
 export function buildWSOptions(): WebSocket.ClientOptions {
   const cookie = buildCookieString({
-    browser_info: 'extension_chrome'
+    grauth:
+      'AABGzmB1JiWsidu1XN_zVnGLWV1Bo0jb_FSJM42-5nB5kaLvJAz_8YyM88i3MB962No6nCTGgWTUDaR9',
+    gnar_containerId: 'ajux95lcsf36682'
   });
-
   return {
     headers: buildHeaders(cookie),
     origin: env.origin
@@ -79,6 +82,7 @@ export function connect(
       url || env.endpoint,
       options || buildWSOptions()
     );
+
     server.onopen = () => {
       resolve(server);
     };

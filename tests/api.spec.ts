@@ -1,6 +1,7 @@
 // tslint:disable:no-expression-statement
 import { GrammarlySession } from '../src/lib/api';
-import { sleep } from '../src/lib/utils';
+
+jest.setTimeout(100000);
 
 describe('api tests', () => {
   it('init', () => {
@@ -10,9 +11,7 @@ describe('api tests', () => {
   it('connect', async done => {
     const server = new GrammarlySession();
 
-    server.analyse('hello worlds!');
-
-    await sleep(5000);
+    await server.analyse('hello worlds!');
 
     done();
   });

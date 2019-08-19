@@ -85,7 +85,14 @@ export interface OTMessage {
   /**
    * An array of operational transform messages.
    *
-   * Messages must conform to the
+   * Messages are prefixed with '+0:0:' and suffixed with ':0'
+   *
+   * An Example submission:
+   * ```js
+   * {
+   *  ch: ['+0:0:This is the text to submit:0']
+   * }
+   * ```
    */
   ch: string[];
 
@@ -104,11 +111,11 @@ export interface OTMessage {
  * @param pos the existing position of the insert.
  */
 export const stringToTransform = (str: string, pos?: string) => {
-  return `0:${pos || '0'}:${str}:0`;
+  return `+0:${pos || '0'}:${str}:0`;
 };
 
 export const buildInitialMessage = (): InfoMessage => ({
-  type: 'other',
+  type: 'initial',
   docid: uuid.v4(),
   client: 'extension_chrome',
   protocolVersion: '1.0',
@@ -121,7 +128,7 @@ export const buildInitialMessage = (): InfoMessage => ({
   ],
   dialect: 'british',
   clientVersion: '14.924.2437',
-  extDomain: 'json2ts.com',
+  extDomain: 'keep.google.com',
   action: 'start',
   id: 0,
   sid: 0
