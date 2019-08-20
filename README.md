@@ -23,7 +23,7 @@ const results = await free.analyse(text);
 
 Allows you to get access to the results that Grammarly on the web would provide you with.
 
-Results are returned in this format:
+This library uses a Promise-based return system, so you will receive all the corrections in a single array, like so:
 
 ```js
 {
@@ -54,7 +54,7 @@ const premium = new Grammarly({
 premium.analyse('hello worlds');
 ```
 
-Premium gives you access to plagiarism checking and advanced grammar hints.
+Premium gives you access to plagiarism checking.
 
 ## API
 
@@ -126,3 +126,5 @@ Here is an example of an alert warning us about some mistakes in the phrase 'hel
       id: 3
     }
 ```
+
+Premium alerts are actually returned over the `freews` socket. So you can view them along with their transformations just as with free corrections.
