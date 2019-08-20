@@ -40,7 +40,7 @@ export function buildCookieString(pairs: CookieOptions): string {
  *
  * @param Cookie a string cookie, used for auth
  */
-export function buildHeaders(Cookie: string): Headers {
+export function buildWebsocketHeaders(Cookie: string): Headers {
   return {
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
@@ -63,7 +63,7 @@ export function buildWSOptions(auth: Auth): WebSocket.ClientOptions {
   const cookie = buildCookieString(getAuthCookies(auth));
 
   return {
-    headers: buildHeaders(cookie),
+    headers: buildWebsocketHeaders(cookie),
     origin: env.origin.firefox
   };
 }
@@ -78,8 +78,8 @@ export function connect(
   url?: string,
   options?: WebSocket.ClientOptions
 ): Promise<Connection> {
-  return new Promise<Connection>((resolve, reject) => {
-    const auth = buildAuth();
+  return new Promise<Connection>(async (resolve, reject) => {
+    const auth = await buildAuth();
 
     const server = new WebSocket(
       url || env.endpoint,

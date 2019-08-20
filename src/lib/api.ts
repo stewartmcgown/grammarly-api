@@ -1,9 +1,8 @@
+import consola from 'consola';
 import WebSocket, { MessageEvent } from 'ws';
 import { connect } from './connection';
-import { buildInitialMessage, buildOTMessage, BaseMessage } from './messages';
-import { sleep } from './utils';
-import { Auth } from './auth';
-import { ProblemResponse, FinishedResponse } from './responses';
+import { BaseMessage, buildInitialMessage, buildOTMessage } from './messages';
+import { FinishedResponse, ProblemResponse } from './responses';
 
 /**
  * The completed result from a Grammarly analysis session
@@ -19,8 +18,6 @@ export interface GrammarlyResult {
  */
 export class Grammarly {
   private connection!: WebSocket;
-
-  private auth!: Auth;
 
   private get isEstablished(): boolean {
     return (
@@ -38,18 +35,18 @@ export class Grammarly {
    */
   public async analyse(
     text: string,
-    timeout: number = 15000
+    timeout: number = 30000
   ): Promise<GrammarlyResult> {
     if (!this.isEstablished) {
       await this.establish();
     }
 
-    console.log('Successfully connected to Grammarly!');
+    consola.debug('Successfully connected to Grammarly!');
 
     return new Promise((resolve, reject) => {
       // Send the text now that we have
       this.connection.send(JSON.stringify(buildOTMessage(text)));
-      console.log('Sent text to Grammarly!');
+      consola.debug('Sent text to Grammarly!');
 
       const alerts: ProblemResponse[] = [];
 
@@ -76,6 +73,12 @@ export class Grammarly {
           this.connection.close();
         }
       };
+
+      // Handle timeout
+      const interval = setInterval(() => {
+        reject(new Error('Still waiting for results before timeout'));
+        clearInterval(interval);
+      }, timeout);
     });
   }
 
@@ -86,16 +89,15 @@ export class Grammarly {
    * @throws {Object} if cookies are bad
    */
   private async establish(): Promise<BaseMessage> {
-    console.log('Re-establishing connection.');
+    consola.debug('Re-establishing connection.');
 
-    const { connection, auth } = await connect();
+    const { connection } = await connect();
 
     this.connection = connection;
-    this.auth = auth;
 
     this.connection.send(JSON.stringify(buildInitialMessage()));
 
-    console.log('Sent establishing message');
+    consola.debug('Sent establishing message');
 
     return new Promise((resolve, reject) => {
       /**

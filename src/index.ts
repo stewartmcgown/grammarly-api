@@ -1,1 +1,1 @@
-export * from './lib/api';
+export { Grammarly } from './lib/api';

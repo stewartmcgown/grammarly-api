@@ -11,7 +11,7 @@
   "keywords": [],
   "scripts": {
     "describe": "npm-scripts-info",
-    "build": "tsc -p tsconfig.json",
+    "build": "nps build",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:tslint": "tslint --fix --project .",
@@ -47,18 +47,18 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "crypto-random-string": "^3.0.1",
-    "sha.js": "^2.4.11",
+    "consola": "^2.10.1",
+    "node-fetch": "^2.6.0",
     "uuid": "^3.3.2",
     "ws": "^7.1.2"
   },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",
     "@types/jest": "^24.0.17",
+    "@types/node-fetch": "^2.5.0",
     "@types/uuid": "^3.4.5",
     "@types/ws": "^6.0.2",
     "codecov": "^3.5.0",
-    "consola": "^2.10.1",
     "cz-conventional-changelog": "^2.1.0",
     "gh-pages": "^2.0.1",
     "jest": "^24.9.0",

@@ -13,6 +13,14 @@ module.exports = {
       run: {
         script: 'cross-env NODE_ENV=test jest tests'
       }
+    },
+    build: {
+      default: {
+        script: series('nps build.prebuild', 'tsc -p tsconfig.build.json')
+      },
+      prebuild: {
+        script: rimraf('./build')
+      }
     }
   }
 };

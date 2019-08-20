@@ -20,6 +20,6 @@
 
     /* end tslint-immutable rules */
 
-    "no-console": false
+    "no-console": true
   }
 }

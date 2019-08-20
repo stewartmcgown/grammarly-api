@@ -25,9 +25,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["es5", "es6", "dom", "esnext"],
-    "types": ["node", "jest"],
+    "types": ["node"],
     "typeRoots": ["node_modules/@types", "src/types"]
   },
+  "include": ["src"],
   "exclude": ["node_modules/**"],
   "compileOnSave": false
 }
