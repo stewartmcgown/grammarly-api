@@ -22,7 +22,7 @@ export interface GrammarlyResult {
 /**
  * Manage an interactive Grammarly session.
  */
-export class GrammarlySession {
+export class Grammarly {
   private connection!: WebSocket;
 
   private auth!: Auth;

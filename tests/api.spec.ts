@@ -1,15 +1,15 @@
 // tslint:disable:no-expression-statement
-import { GrammarlySession } from '../src/lib/api';
+import { Grammarly } from '../src/lib/api';
 
 jest.setTimeout(10000);
 
 describe('api tests', () => {
   it('init', () => {
-    expect(new GrammarlySession()).toBeInstanceOf(GrammarlySession);
+    expect(new Grammarly()).toBeInstanceOf(Grammarly);
   });
 
   it('analyse a phrase with a single mistake', async done => {
-    const server = new GrammarlySession();
+    const server = new Grammarly();
 
     const response = await server.analyse('hello worlds!');
 
@@ -19,7 +19,7 @@ describe('api tests', () => {
   });
 
   it('analyse a phrase with multiple mistakes', async done => {
-    const server = new GrammarlySession();
+    const server = new Grammarly();
 
     const response = await server.analyse('Hello their, my naem is John.');
 
