@@ -1,7 +1,7 @@
 // tslint:disable:no-expression-statement
 import { GrammarlySession } from '../src/lib/api';
 
-jest.setTimeout(100000);
+jest.setTimeout(10000);
 
 describe('api tests', () => {
   it('init', () => {

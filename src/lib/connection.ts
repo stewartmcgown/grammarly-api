@@ -15,13 +15,14 @@ export interface Headers extends StringObject {
 }
 
 export interface CookieOptions {
-  gnar_containerId?: string;
-  grauth?: string;
-  'csrf-token'?: string;
-  funnelType?: string;
-  browser_info?: string;
-  redirect_location?: string;
+  gnar_containerId: string;
+  grauth: string;
+  'csrf-token': string;
+  funnelType: 'free';
+  browser_info: string;
+  redirect_location: string;
   experiment_groups?: string;
+  firefox_freemium?: 'true' | 'false';
 }
 
 export function buildCookieString(pairs: CookieOptions): string {
@@ -44,7 +45,7 @@ export function buildHeaders(Cookie: string): Headers {
     Connection: 'Upgrade',
     Cookie,
     Host: env.host,
-    Origin: env.origin,
+    Origin: env.origin.firefox,
     Pragma: 'no-cache',
     Upgrade: 'websocket',
     'User-Agent':
@@ -53,17 +54,34 @@ export function buildHeaders(Cookie: string): Headers {
 }
 
 /**
+ * Generate a random browser string
+ *
+ * TODO: Get list of supported browser strings
+ */
+export function generateBrowserString(): string {
+  return 'FIREFOX:67:COMPUTER:SUPPORTED:FREEMIUM:MAC_OS_X:MAC_OS_X';
+}
+
+/**
  * Create the options needed for connecting to the remote Grammarly host.
  */
 export function buildWSOptions(): WebSocket.ClientOptions {
   const cookie = buildCookieString({
     grauth:
-      'AABGzmB1JiWsidu1XN_zVnGLWV1Bo0jb_FSJM42-5nB5kaLvJAz_8YyM88i3MB962No6nCTGgWTUDaR9',
-    gnar_containerId: 'ajux95lcsf36682'
+      'AABG0KK96Bd40dGHl8T3vHw_1J-DZoje6K3SUb2FZqy7C5PibVmlGFj0xjyRh8xKRSjlYObWZsmU7uhv',
+    gnar_containerId: 'mrrq95v5ogec702',
+    'csrf-token': 'AABG0PO964qVN5v+1KpTbi1SoJS0+EWa1Ag2Ow',
+    firefox_freemium: 'true',
+    funnelType: 'free',
+    browser_info: generateBrowserString(),
+    redirect_location:
+      'eyJ0eXBlIjoiIiwibG9jYXRpb24iOiJodHRwczovL3d3dy5ncmFtbWFybHkuY29tL2FmdGVyX2luc3RhbGxfcGFnZT9leHRlbnNpb25faW5zdGFsbD10cnVlJnV0bV9tZWRpdW09c3RvcmUmdXRtX3NvdXJjZT1maXJlZm94In0='
   });
+
+  console.log(cookie);
   return {
     headers: buildHeaders(cookie),
-    origin: env.origin
+    origin: env.origin.firefox
   };
 }
 
