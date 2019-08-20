@@ -11,7 +11,7 @@ module.exports = {
         script: tslint(`./test/unit/**.ts`)
       },
       run: {
-        script: 'cross-env NODE_ENV=test jest'
+        script: 'cross-env NODE_ENV=test jest tests'
       }
     }
   }

@@ -95,6 +95,7 @@ export function connect(
 
     server.onerror = err => {
       reject(err);
+      server.close();
     };
   });
 }

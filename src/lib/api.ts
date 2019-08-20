@@ -1,8 +1,23 @@
 import WebSocket, { MessageEvent } from 'ws';
 import { connect } from './connection';
-import { buildInitialMessage, buildOTMessage, BaseMessage } from './messages';
+import {
+  buildInitialMessage,
+  buildOTMessage,
+  BaseMessage,
+  AlertMessage,
+  FinishedMessage
+} from './messages';
 import { sleep } from './utils';
 import { Auth } from './auth';
+
+/**
+ * The completed result from a Grammarly analysis session
+ */
+export interface GrammarlyResult {
+  alerts: AlertMessage[];
+
+  result: FinishedMessage;
+}
 
 /**
  * Manage an interactive Grammarly session.
@@ -20,34 +35,60 @@ export class GrammarlySession {
     );
   }
 
-  public async analyse(text: string): Promise<any> {
+  /**
+   * Analyse some text
+   *
+   * @param text text to analyse
+   * @param timeout how long to wait before we stop collecting results
+   */
+  public async analyse(
+    text: string,
+    timeout: number = 15000
+  ): Promise<GrammarlyResult> {
     if (!this.isEstablished) {
       await this.establish();
     }
 
     console.log('Successfully connected to Grammarly!');
 
-    // Resolve on first message from sever.
-    // const returnValue: Promise<any> = new Promise(resolve => {});
+    return new Promise((resolve, reject) => {
+      // Send the text now that we have
+      this.connection.send(JSON.stringify(buildOTMessage(text)));
+      console.log('Sent text to Grammarly!');
 
-    this.connection.onmessage = message => {
-      const result = this.handleMessage(message.data);
-      if (result.done) {
-        // resolve(result);
-      }
-    };
+      const alerts: AlertMessage[] = [];
 
-    this.connection.send(JSON.stringify(buildOTMessage(text)));
+      /**
+       * This message handler will listen for all corrections from the server. Once it receives
+       * the {@link CompleteMessage} object the promise will resolve.
+       */
+      this.connection.onmessage = (message: MessageEvent) => {
+        const parsed = JSON.parse(message.data.toString());
 
-    console.log('Sent text to Grammarly!');
+        // Message is probably a correction
+        if (parsed.action === 'alert') {
+          const alert = parsed as AlertMessage;
 
-    await sleep(1000000);
-    // return returnValue;
-    return {};
+          alerts.push(alert);
+        } else if (parsed.action === 'finished') {
+          const result = parsed as FinishedMessage;
+
+          resolve({
+            alerts,
+            result
+          });
+
+          this.connection.close();
+        }
+      };
+    });
   }
 
   /**
    * Establish communication with the Grammarly API.
+   *
+   * @returns the initial response message
+   * @throws {Object} if cookies are bad
    */
   private async establish(): Promise<BaseMessage> {
     console.log('Re-establishing connection.');
@@ -61,8 +102,7 @@ export class GrammarlySession {
 
     console.log('Sent establishing message');
 
-    // Temp handler for first message
-    const returnValue: Promise<BaseMessage> = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       /**
        * The first message should be in this form:
        *
@@ -86,17 +126,5 @@ export class GrammarlySession {
         }
       };
     });
-
-    return returnValue;
-  }
-
-  /**
-   * Receive a message and forward it on the appropriate handler.
-   *
-   * @param message a message
-   */
-  private handleMessage(message: any): any {
-    console.log(message);
-    return message;
   }
 }

@@ -76,6 +76,32 @@ export interface InfoMessage extends BaseMessage {
 }
 
 /**
+ * Alerts are sent by the server in response to
+ */
+export interface AlertMessage {}
+
+/**
+ * Sent by the server when checking of the text has been completed.
+ */
+export interface FinishedMessage {
+  sid: number;
+  rev: number;
+  checkedBegin: number;
+  checkedEnd: number;
+  score: number;
+  generalScore: number;
+  removed: any[];
+  errors: number;
+  interrupts: number;
+  skipped: number;
+  rejected: number;
+  blocked: number;
+  dialect: string;
+  foreign: boolean;
+  action: 'finished';
+}
+
+/**
  * A message containing information about an operational transform
  * taking place.
  */
