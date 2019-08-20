@@ -3,8 +3,10 @@ import { connect } from '../src/lib/connection';
 
 describe('connection tests', () => {
   it('connect to the websocket server', async () => {
-    const server = await connect();
+    const { connection } = await connect();
 
-    expect(server.readyState).toEqual(WebSocket.OPEN);
+    expect(connection.readyState).toEqual(WebSocket.OPEN);
+
+    connection.close();
   });
 });

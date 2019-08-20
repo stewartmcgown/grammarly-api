@@ -8,10 +8,22 @@ describe('api tests', () => {
     expect(new GrammarlySession()).toBeInstanceOf(GrammarlySession);
   });
 
-  it('connect', async done => {
+  it('analyse a phrase with a single mistake', async done => {
     const server = new GrammarlySession();
 
-    await server.analyse('hello worlds!');
+    const response = await server.analyse('hello worlds!');
+
+    expect(response.alerts.length).toBe(1);
+
+    done();
+  });
+
+  it('analyse a phrase with multiple mistakes', async done => {
+    const server = new GrammarlySession();
+
+    const response = await server.analyse('Hello their, my naem is John.');
+
+    expect(response.alerts.length).toBeGreaterThan(1);
 
     done();
   });
