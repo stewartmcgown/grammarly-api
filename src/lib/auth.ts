@@ -1,5 +1,3 @@
-import cryptoRandomString from 'crypto-random-string';
-
 import { CookieOptions } from './connection';
 
 //
@@ -26,8 +24,23 @@ export interface Auth {
 // Functions
 //
 
+/**
+ * Alphanumeric random string implementation
+ *
+ * @see Grammarly-bg.js:11260
+ */
 export function generateContainerId(): string {
-  return cryptoRandomString({ length: 15 });
+  const r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  const alphanumeric = function e(t = 0, n = ''): string {
+    if (t <= 0) {
+      return n;
+    }
+    const o = Math.floor(Math.random() * (r.length - 1));
+    return e(t - 1, n + r.charAt(o));
+  };
+
+  return alphanumeric(15);
 }
 
 /**
@@ -55,6 +68,14 @@ export function getAuthCookies(auth: Auth): CookieOptions {
     funnelType: 'free',
     browser_info: generateBrowserString()
   };
+}
+
+export function generateAuthURL(
+  user: string = 'oranonymous',
+  app: string = 'firefoxExt',
+  containerId: string = generateContainerId()
+) {
+  return `https://auth.grammarly.com/v3/user/${user}?app=${app}&containerId=${containerId}`;
 }
 
 /**

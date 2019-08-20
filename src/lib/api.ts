@@ -1,22 +1,17 @@
 import WebSocket, { MessageEvent } from 'ws';
 import { connect } from './connection';
-import {
-  buildInitialMessage,
-  buildOTMessage,
-  BaseMessage,
-  AlertMessage,
-  FinishedMessage
-} from './messages';
+import { buildInitialMessage, buildOTMessage, BaseMessage } from './messages';
 import { sleep } from './utils';
 import { Auth } from './auth';
+import { ProblemResponse, FinishedResponse } from './responses';
 
 /**
  * The completed result from a Grammarly analysis session
  */
 export interface GrammarlyResult {
-  alerts: AlertMessage[];
+  alerts: ProblemResponse[];
 
-  result: FinishedMessage;
+  result: FinishedResponse;
 }
 
 /**
@@ -56,7 +51,7 @@ export class Grammarly {
       this.connection.send(JSON.stringify(buildOTMessage(text)));
       console.log('Sent text to Grammarly!');
 
-      const alerts: AlertMessage[] = [];
+      const alerts: ProblemResponse[] = [];
 
       /**
        * This message handler will listen for all corrections from the server. Once it receives
@@ -67,11 +62,11 @@ export class Grammarly {
 
         // Message is probably a correction
         if (parsed.action === 'alert') {
-          const alert = parsed as AlertMessage;
+          const alert = parsed as ProblemResponse;
 
           alerts.push(alert);
         } else if (parsed.action === 'finished') {
-          const result = parsed as FinishedMessage;
+          const result = parsed as FinishedResponse;
 
           resolve({
             alerts,

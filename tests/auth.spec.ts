@@ -1,4 +1,4 @@
-import { buildAuth } from '../src/lib/auth';
+import { buildAuth, generateContainerId } from '../src/lib/auth';
 
 describe('auth', () => {
   it('builder should contain values', () => {
@@ -6,6 +6,9 @@ describe('auth', () => {
 
     expect(typeof auth.grauth).toBe('string');
     expect(typeof auth.gnar_containerId).toBe('string');
-    expect(auth.gnar_containerId.length).toBe(15);
+  });
+
+  it('generate container id', () => {
+    expect(generateContainerId().length).toBe(15);
   });
 });
