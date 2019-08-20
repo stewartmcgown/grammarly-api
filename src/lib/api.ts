@@ -2,12 +2,15 @@ import WebSocket, { MessageEvent } from 'ws';
 import { connect } from './connection';
 import { buildInitialMessage, buildOTMessage, BaseMessage } from './messages';
 import { sleep } from './utils';
+import { Auth } from './auth';
 
 /**
  * Manage an interactive Grammarly session.
  */
 export class GrammarlySession {
   private connection!: WebSocket;
+
+  private auth!: Auth;
 
   private get isEstablished(): boolean {
     return (
@@ -49,7 +52,10 @@ export class GrammarlySession {
   private async establish(): Promise<BaseMessage> {
     console.log('Re-establishing connection.');
 
-    this.connection = await connect();
+    const { connection, auth } = await connect();
+
+    this.connection = connection;
+    this.auth = auth;
 
     this.connection.send(JSON.stringify(buildInitialMessage()));
 
@@ -57,12 +63,22 @@ export class GrammarlySession {
 
     // Temp handler for first message
     const returnValue: Promise<BaseMessage> = new Promise((resolve, reject) => {
+      /**
+       * The first message should be in this form:
+       *
+       * ```js
+       * { sid: 0, action: 'start', id: 0 }
+       * ```
+       *
+       *  Receiving this, without another 'error' message, means the connection is
+       *  ready to go and we can start sending text.
+       */
       this.connection.onmessage = (message: MessageEvent) => {
-        // This message should be an instance of a start action.
-        const parsedMessage = JSON.parse(message.data.toString());
+        const parsedMessage = JSON.parse(
+          message.data.toString()
+        ) as BaseMessage;
 
-        console.log(parsedMessage);
-        if (!parsedMessage.error) {
+        if (parsedMessage && parsedMessage.action === 'start') {
           this.connection.onmessage = () => null; // Garbage collect
           resolve(parsedMessage as BaseMessage);
         } else {

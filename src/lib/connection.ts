@@ -1,4 +1,6 @@
 import WebSocket from 'ws';
+
+import { Auth, buildAuth, getAuthCookies } from './auth';
 import env from './env';
 
 export interface Headers extends StringObject {
@@ -14,15 +16,16 @@ export interface Headers extends StringObject {
   Cookie: string;
 }
 
-export interface CookieOptions {
-  gnar_containerId: string;
-  grauth: string;
-  'csrf-token': string;
+export interface CookieOptions extends Auth {
   funnelType: 'free';
   browser_info: string;
-  redirect_location: string;
   experiment_groups?: string;
   firefox_freemium?: 'true' | 'false';
+}
+
+export interface Connection {
+  connection: WebSocket;
+  auth: Auth;
 }
 
 export function buildCookieString(pairs: CookieOptions): string {
@@ -54,31 +57,11 @@ export function buildHeaders(Cookie: string): Headers {
 }
 
 /**
- * Generate a random browser string
- *
- * TODO: Get list of supported browser strings
- */
-export function generateBrowserString(): string {
-  return 'FIREFOX:67:COMPUTER:SUPPORTED:FREEMIUM:MAC_OS_X:MAC_OS_X';
-}
-
-/**
  * Create the options needed for connecting to the remote Grammarly host.
  */
-export function buildWSOptions(): WebSocket.ClientOptions {
-  const cookie = buildCookieString({
-    grauth:
-      'AABG0KK96Bd40dGHl8T3vHw_1J-DZoje6K3SUb2FZqy7C5PibVmlGFj0xjyRh8xKRSjlYObWZsmU7uhv',
-    gnar_containerId: 'mrrq95v5ogec702',
-    'csrf-token': 'AABG0PO964qVN5v+1KpTbi1SoJS0+EWa1Ag2Ow',
-    firefox_freemium: 'true',
-    funnelType: 'free',
-    browser_info: generateBrowserString(),
-    redirect_location:
-      'eyJ0eXBlIjoiIiwibG9jYXRpb24iOiJodHRwczovL3d3dy5ncmFtbWFybHkuY29tL2FmdGVyX2luc3RhbGxfcGFnZT9leHRlbnNpb25faW5zdGFsbD10cnVlJnV0bV9tZWRpdW09c3RvcmUmdXRtX3NvdXJjZT1maXJlZm94In0='
-  });
+export function buildWSOptions(auth: Auth): WebSocket.ClientOptions {
+  const cookie = buildCookieString(getAuthCookies(auth));
 
-  console.log(cookie);
   return {
     headers: buildHeaders(cookie),
     origin: env.origin.firefox
@@ -94,16 +77,22 @@ export function buildWSOptions(): WebSocket.ClientOptions {
 export function connect(
   url?: string,
   options?: WebSocket.ClientOptions
-): Promise<WebSocket> {
-  return new Promise((resolve, reject) => {
+): Promise<Connection> {
+  return new Promise<Connection>((resolve, reject) => {
+    const auth = buildAuth();
+
     const server = new WebSocket(
       url || env.endpoint,
-      options || buildWSOptions()
+      options || buildWSOptions(auth)
     );
 
     server.onopen = () => {
-      resolve(server);
+      resolve({
+        connection: server,
+        auth
+      });
     };
+
     server.onerror = err => {
       reject(err);
     };
