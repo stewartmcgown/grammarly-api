@@ -12,6 +12,8 @@
 ### Analyse Text
 
 ```ts
+import { Grammarly } from 'grammarly-api';
+
 const text = `When we have shuffled off this mortal coil,
 Must give us pause - their's the respect
 That makes calamity of so long life.`;
@@ -42,6 +44,18 @@ This library uses a Promise-based return system, so you will receive all the cor
   }
 }
 ```
+
+### Correct results
+
+```js
+import { correct, Grammarly } from 'gramarly-api';
+
+const text =
+
+const { corrected } = await new Grammarly().analyse(text).then(correct);
+```
+
+Will extract the correct text from the results.
 
 ### Authenticate to Premium (_coming soon!_)
 
@@ -134,4 +148,12 @@ Premium alerts are actually returned over the `freews` socket. So you can view t
 You can use your own tokens to connect to the socket. They must adhere to the `Auth` interface, like so:
 
 ```js
+const premium = new Grammarly({
+  auth: {
+    grauth: 'xxxxxxxxx',
+    'csrf-token': 'xxxxxxxxxx'
+  }
+});
 ```
+
+Your own personal AuthTokens can be found by inspecting the Firefox extension and looking at the `Cookies` tab.

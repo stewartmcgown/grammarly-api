@@ -12,6 +12,10 @@ export interface GrammarlyResult {
   alerts: ProblemResponse[];
 
   result: FinishedResponse;
+
+  corrected?: string;
+
+  original: string;
 }
 
 export interface GrammarlyOptions {
@@ -77,7 +81,8 @@ export class Grammarly {
 
           resolve({
             alerts,
-            result
+            result,
+            original: text
           });
 
           this.connection.close();

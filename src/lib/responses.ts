@@ -10,6 +10,7 @@ export interface Transform {
 export interface TransformJson {
   context: Transform;
   highlights: Transform[];
+  alternatives: any[];
 }
 
 export interface CardLayout {
