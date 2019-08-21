@@ -8,4 +8,4 @@ export function fromEntries(iterable: any): any {
 }
 
 export const cookieToObject = (cookie: string, splitter = ';') =>
-  Object.fromEntries(cookie.split(splitter).map(x => x.split('=')));
+  fromEntries(cookie.split(splitter).map(x => x.split('=')));
