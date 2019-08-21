@@ -37,8 +37,8 @@ export interface RequiredAuth {
 //
 
 /**
- * Generates a containerId for use in the cookie request. Container
- * ID's do not seem to be linked to authentication.
+ * Generates a containerId for use in the cookie request. Must be the same as the
+ * one sent to generate grauth.
  */
 export function generateContainerId(): string {
   const r = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -47,6 +47,7 @@ export function generateContainerId(): string {
    * Alphanumeric random string implementation
    *
    * @see Grammarly-bg.js:11260
+   * @author Grammarly Inc.
    */
   const alphanumeric = function e(t = 0, n = ''): string {
     if (t <= 0) {
@@ -163,13 +164,14 @@ export function parseResponseCookies(cookies: string[]): RequiredAuth {
  */
 export async function buildAuth(): Promise<Auth> {
   const gnar_containerId = generateContainerId();
+  const redirect_location = generateRedirectLocation();
 
   const response = await fetch(generateAuthURL(), {
     headers: buildAuthHeaders(
       buildCookieString({
         ...getAuthCookies({
           gnar_containerId,
-          redirect_location: generateRedirectLocation()
+          redirect_location
         })
       }),
       gnar_containerId
@@ -183,10 +185,10 @@ export async function buildAuth(): Promise<Auth> {
   const cookies = parseResponseCookies(response.headers.raw()['set-cookie']);
 
   return {
-    gnar_containerId: generateContainerId(),
+    gnar_containerId,
     grauth: cookies.grauth,
     'csrf-token': cookies['csrf-token'],
-    redirect_location: generateRedirectLocation()
+    redirect_location
   };
 }
 
