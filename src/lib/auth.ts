@@ -32,6 +32,11 @@ export interface RequiredAuth {
   'csrf-token': string;
 }
 
+export interface AuthHostOrigin {
+  Host: string;
+  Origin: string;
+}
+
 //
 // Functions
 //
@@ -116,14 +121,19 @@ export function generateRedirectLocation(browser = 'firefox'): string {
   ).toString('base64');
 }
 
-export function buildAuthHeaders(Cookie: string, containerId: string): any {
+export function buildAuthHeaders(
+  Cookie: string,
+  containerId: string,
+  Origin: string = env.origin.firefox,
+  Host: string = 'auth.grammarly.com'
+): any {
   return {
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
     'Cache-Control': 'no-cache',
     Cookie,
-    Host: 'auth.grammarly.com',
-    Origin: env.origin.firefox,
+    Host,
+    Origin,
     Pragma: 'no-cache',
     'X-Container-Id': containerId,
     'X-Client-Version': '8.852.2307',
@@ -162,11 +172,15 @@ export function parseResponseCookies(cookies: string[]): RequiredAuth {
  * objects are used in both initial Cookie transfer and are occasionally sent
  * over the websocket connection.
  */
-export async function buildAuth(): Promise<Auth> {
+export async function buildAuth(
+  origin?: string,
+  host?: string,
+  authUrl?: string
+): Promise<Auth> {
   const gnar_containerId = generateContainerId();
   const redirect_location = generateRedirectLocation();
 
-  const response = await fetch(generateAuthURL(), {
+  const response = await fetch(authUrl || generateAuthURL(), {
     headers: buildAuthHeaders(
       buildCookieString({
         ...getAuthCookies({
@@ -174,7 +188,9 @@ export async function buildAuth(): Promise<Auth> {
           redirect_location
         })
       }),
-      gnar_containerId
+      gnar_containerId,
+      origin,
+      host
     )
   });
 

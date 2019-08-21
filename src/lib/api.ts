@@ -92,6 +92,7 @@ export class Grammarly {
       // Handle timeout
       const interval = setInterval(() => {
         reject(new Error('Still waiting for results before timeout'));
+        this.connection.close();
         clearInterval(interval);
       }, timeout);
     });

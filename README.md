@@ -50,12 +50,24 @@ This library uses a Promise-based return system, so you will receive all the cor
 ```js
 import { correct, Grammarly } from 'gramarly-api';
 
-const text =
+const text = `...`;
 
 const { corrected } = await new Grammarly().analyse(text).then(correct);
 ```
 
 Will extract the correct text from the results.
+
+### Free Plagiarism Checker
+
+```js
+import { plagiarism } from 'grammarly-api';
+
+const text = `...`;
+
+const { hasPlagiarism } = await plagiarism();
+```
+
+Doesn't return any details, just tells you if there was Plagiarism at all.
 
 ### Authenticate to Premium (_coming soon!_)
 

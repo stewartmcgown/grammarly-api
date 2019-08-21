@@ -50,14 +50,19 @@ export function applyTransform(
   };
 }
 
+/**
+ * Updates an alert's properties by the specified diff amounts
+ *
+ * @param alert the alert to update
+ * @param diff how much to adjust by
+ */
 export function updateAlert(
   alert: ProblemResponse,
   diff: number
 ): ProblemResponse {
   const { begin, end, highlightBegin, highlightEnd, transformJson } = alert;
 
-  transformJson.context.e += diff;
-  transformJson.context.s += diff;
+  const { e, s } = transformJson.context;
 
   return {
     ...alert,
@@ -65,7 +70,13 @@ export function updateAlert(
     end: end + diff,
     highlightBegin: highlightBegin + diff,
     highlightEnd: highlightEnd + diff,
-    transformJson
+    transformJson: {
+      ...transformJson,
+      context: {
+        e: e + diff,
+        s: e + diff
+      }
+    }
   };
 }
 
