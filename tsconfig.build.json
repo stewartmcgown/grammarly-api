@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2015",
     "outDir": "build",
     "moduleResolution": "node",
     "module": "commonjs",
@@ -24,7 +24,7 @@
     "pretty": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": ["es5", "es6", "dom", "esnext"],
+    "lib": ["esnext"],
     "types": ["node"],
     "typeRoots": ["node_modules/@types", "src/types"]
   },

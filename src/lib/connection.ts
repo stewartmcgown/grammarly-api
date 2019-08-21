@@ -1,10 +1,9 @@
 import WebSocket from 'ws';
-
 import {
   Auth,
   buildAuth,
-  getAuthCookies,
   buildAuthWithUserTokens,
+  getAuthCookies,
   RequiredAuth
 } from './auth';
 import env from './env';

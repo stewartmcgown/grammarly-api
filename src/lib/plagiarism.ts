@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 import {
+  AuthHostOrigin,
   buildAuth,
   buildAuthHeaders,
-  getAuthCookies,
-  AuthHostOrigin
+  getAuthCookies
 } from './auth';
 import { buildCookieString } from './connection';
 

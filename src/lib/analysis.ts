@@ -1,5 +1,3 @@
-import consola from 'consola';
-import { TransformJson } from '../../build/lib/responses';
 import { GrammarlyResult } from './api';
 import { ProblemResponse } from './responses';
 
@@ -74,7 +72,7 @@ export function updateAlert(
       ...transformJson,
       context: {
         e: e + diff,
-        s: e + diff
+        s: s + diff
       }
     }
   };
