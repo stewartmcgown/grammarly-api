@@ -3,8 +3,6 @@ import { sleep } from '../src/lib/utils';
 
 describe('finds plagiarism', () => {
   it('detect tom sawyer', async () => {
-    await sleep(1000); // Allow time between requests
-
     const sawyer = `"TOM!"
 
     No answer.
