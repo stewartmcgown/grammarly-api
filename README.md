@@ -128,3 +128,10 @@ Here is an example of an alert warning us about some mistakes in the phrase 'hel
 ```
 
 Premium alerts are actually returned over the `freews` socket. So you can view them along with their transformations just as with free corrections.
+
+### Providing your own authentication
+
+You can use your own tokens to connect to the socket. They must adhere to the `Auth` interface, like so:
+
+```js
+```

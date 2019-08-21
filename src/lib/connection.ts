@@ -1,6 +1,12 @@
 import WebSocket from 'ws';
 
-import { Auth, buildAuth, getAuthCookies } from './auth';
+import {
+  Auth,
+  buildAuth,
+  getAuthCookies,
+  buildAuthWithUserTokens,
+  RequiredAuth
+} from './auth';
 import env from './env';
 
 export interface Headers extends StringObject {
@@ -71,20 +77,15 @@ export function buildWSOptions(auth: Auth): WebSocket.ClientOptions {
 /**
  * Connect to the remote WebSocket
  *
- * @param url url of the host
- * @param options options for connection
+ * @param userAuth a custom user auth object
  */
-export function connect(
-  url?: string,
-  options?: WebSocket.ClientOptions
-): Promise<Connection> {
+export function connect(userAuth?: RequiredAuth): Promise<Connection> {
   return new Promise<Connection>(async (resolve, reject) => {
-    const auth = await buildAuth();
+    const auth = userAuth
+      ? buildAuthWithUserTokens(userAuth)
+      : await buildAuth();
 
-    const server = new WebSocket(
-      url || env.endpoint,
-      options || buildWSOptions(auth)
-    );
+    const server = new WebSocket(env.endpoint, buildWSOptions(auth));
 
     server.onopen = () => {
       resolve({

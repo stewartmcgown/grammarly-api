@@ -1,5 +1,6 @@
 import consola from 'consola';
 import WebSocket, { MessageEvent } from 'ws';
+import { RequiredAuth } from './auth';
 import { connect } from './connection';
 import { BaseMessage, buildInitialMessage, buildOTMessage } from './messages';
 import { FinishedResponse, ProblemResponse } from './responses';
@@ -11,6 +12,13 @@ export interface GrammarlyResult {
   alerts: ProblemResponse[];
 
   result: FinishedResponse;
+}
+
+export interface GrammarlyOptions {
+  username?: string;
+  password?: string;
+
+  auth?: RequiredAuth;
 }
 
 /**
@@ -26,6 +34,8 @@ export class Grammarly {
       this.connection.readyState === WebSocket.OPEN
     );
   }
+
+  constructor(private options: GrammarlyOptions = {}) {}
 
   /**
    * Analyse some text
@@ -91,7 +101,7 @@ export class Grammarly {
   private async establish(): Promise<BaseMessage> {
     consola.debug('Re-establishing connection.');
 
-    const { connection } = await connect();
+    const { connection } = await connect(this.options.auth);
 
     this.connection = connection;
 

@@ -26,7 +26,7 @@ export interface Auth {
 /**
  * Parsed values from the 'set-cookies' headers
  */
-export interface AuthResponseCookies {
+export interface RequiredAuth {
   grauth: string;
 
   'csrf-token': string;
@@ -139,7 +139,7 @@ export function buildAuthHeaders(Cookie: string, containerId: string): any {
  *
  * @param cookies array of cookies to parse
  */
-export function parseResponseCookies(cookies: string[]): AuthResponseCookies {
+export function parseResponseCookies(cookies: string[]): RequiredAuth {
   const { grauth } = cookieToObject(cookies.find(c =>
     c.includes('grauth=')
   ) as string);
@@ -186,6 +186,14 @@ export async function buildAuth(): Promise<Auth> {
     gnar_containerId: generateContainerId(),
     grauth: cookies.grauth,
     'csrf-token': cookies['csrf-token'],
+    redirect_location: generateRedirectLocation()
+  };
+}
+
+export function buildAuthWithUserTokens(userTokens: RequiredAuth): Auth {
+  return {
+    ...userTokens,
+    gnar_containerId: generateContainerId(),
     redirect_location: generateRedirectLocation()
   };
 }
