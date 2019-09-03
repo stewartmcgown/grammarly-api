@@ -3,7 +3,8 @@
 </p>
 <p align="center">
   <img src="https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101" />
-  <img src="https://travis-ci.com/stewartmcgown/grammarly-api.svg?token=Syey35s3hTFfwJM2x8gp&branch=master" />
+  <a href="https://travis-ci.com/stewartmcgown/grammarly-api"><img src="https://travis-ci.com/stewartmcgown/grammarly-api.svg?token=Syey35s3hTFfwJM2x8gp&branch=master" /></a>
+  <a href="https://badge.fury.io/js/%40stewartmcgown%2Fgrammarly-api"><img src="https://badge.fury.io/js/%40stewartmcgown%2Fgrammarly-api.svg" alt="npm version" height="18"></a>
 </p>
 
 ## Installation
