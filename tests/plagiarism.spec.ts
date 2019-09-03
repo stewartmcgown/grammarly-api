@@ -1,5 +1,4 @@
 import { plagiarism } from '../src';
-import { sleep } from '../src/lib/utils';
 
 describe('finds plagiarism', () => {
   const NUM_CHECKS = 3;
