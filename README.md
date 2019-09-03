@@ -66,7 +66,7 @@ const text = `...`;
 const { hasPlagiarism } = await plagiarism();
 ```
 
-Doesn't return any details, just tells you if there was Plagiarism at all.
+Doesn't return any details, just tells you if there was Plagiarism at all. The tests for this module does a 'best of three' run, allowing the test to pass if at least one of three checks raises plagiarism issues.
 
 ### Authenticate to Premium (_coming soon!_)
 

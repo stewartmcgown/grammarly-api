@@ -2,6 +2,8 @@ import { plagiarism } from '../src';
 import { sleep } from '../src/lib/utils';
 
 describe('finds plagiarism', () => {
+  const NUM_CHECKS = 3;
+
   it('detect tom sawyer', async () => {
     const sawyer = `"TOM!"
 
@@ -38,9 +40,18 @@ describe('finds plagiarism', () => {
 
     "Y-o-u-u TOM!"`;
 
-    const result = await plagiarism(sawyer);
+    expect.assertions(2);
 
-    expect(result.hasPlagiarism).toEqual(true);
-    expect(result.count).toBeGreaterThanOrEqual(1);
+    for (let i = 0; i < NUM_CHECKS; i++) {
+      const result = await plagiarism(sawyer);
+
+      if (result.hasPlagiarism !== true) continue;
+
+      expect(result.hasPlagiarism).toEqual(true);
+      expect(result.count).toBeGreaterThanOrEqual(1);
+
+      break;
+    }
+
   });
 });
