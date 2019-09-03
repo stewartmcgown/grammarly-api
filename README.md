@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="https://www.grammarly.com/press/media-resources/docs/logo-grammarly.png" />
-  <h1 align="center">Unofficial API Client</h1>
+  <h1 align="center">Unofficial Grammarly API Client</h1>
 </p>
 <p align="center">
   <img src="https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101" />
