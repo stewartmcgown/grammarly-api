@@ -1,5 +1,5 @@
 {
-  "name": "grammarly-api",
+  "name": "@stewartmcgown/grammarly-api",
   "version": "1.0.0",
   "description": "Client for the Grammarly API",
   "main": "build/main/index.js",
