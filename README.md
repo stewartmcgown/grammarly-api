@@ -6,6 +6,14 @@
   <img src="https://travis-ci.com/stewartmcgown/grammarly-api.svg?token=Syey35s3hTFfwJM2x8gp&branch=master" />
 </p>
 
+## Installation
+
+```bash
+npm i -S @stewartmcgown/grammarly-api
+```
+
+Or download the repo and `npm run build`.
+
 ## Usage
 
 ### Analyse Text
