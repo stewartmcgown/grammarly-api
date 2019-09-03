@@ -66,7 +66,7 @@ const text = `...`;
 const { hasPlagiarism } = await plagiarism();
 ```
 
-Doesn't return any details, just tells you if there was Plagiarism at all. It does NOT have a very high success rate (~2/3 false negatives), as the free checker often misses plagiarism.
+Doesn't return any details, just tells you if there was Plagiarism at all.
 
 ### Authenticate to Premium (_coming soon!_)
 
