@@ -2,9 +2,11 @@
   "name": "@stewartmcgown/grammarly-api",
   "version": "1.1.1",
   "description": "Client for the Grammarly API",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "files": [
+    "/build"
+  ],
   "repository": "https://github.com/stewartmcgown/grammarly-api",
   "author": "Stewart McGown <stewart@twistedcore.co.uk>",
   "license": "MIT",
