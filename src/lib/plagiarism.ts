@@ -32,14 +32,15 @@ export function getPlagiarismHostOrigin(): AuthHostOrigin {
  *
  * @author Stewart McGown
  */
-export async function plagiarism(text: string): Promise<PlagiarismResult> {
+export async function plagiarism(text: string, agent?: any): Promise<PlagiarismResult> {
   const { Host, Origin } = getPlagiarismHostOrigin();
 
-  const auth = await buildAuth(
-    Origin,
-    'www.grammarly.com',
-    'https://www.grammarly.com/plagiarism-checker'
-  );
+  const auth = await buildAuth({
+    origin: Origin,
+    host: 'www.grammarly.com',
+    authUrl: 'https://www.grammarly.com/plagiarism-checker',
+    agent
+  });
 
   const results: PartialProblemResponse[] = await fetch(
     'https://capi.grammarly.com/api/check',
@@ -51,7 +52,8 @@ export async function plagiarism(text: string): Promise<PlagiarismResult> {
         Origin,
         Host
       ),
-      body: text
+      body: text,
+      agent
     }
   ).then(r => r.json());
 

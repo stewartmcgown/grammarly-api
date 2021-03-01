@@ -37,6 +37,13 @@ export interface AuthHostOrigin {
   Origin: string;
 }
 
+export interface AuthRequestSettings {
+  origin?: string;
+  host?: string;
+  authUrl?: string;
+  agent?: any;
+}
+
 //
 // Functions
 //
@@ -172,11 +179,12 @@ export function parseResponseCookies(cookies: string[]): RequiredAuth {
  * objects are used in both initial Cookie transfer and are occasionally sent
  * over the websocket connection.
  */
-export async function buildAuth(
-  origin?: string,
-  host?: string,
-  authUrl?: string
-): Promise<Auth> {
+export async function buildAuth({
+  origin,
+  host,
+  authUrl,
+  agent,
+}: AuthRequestSettings): Promise<Auth> {
   const gnar_containerId = generateContainerId();
   const redirect_location = generateRedirectLocation();
 
@@ -191,7 +199,8 @@ export async function buildAuth(
       gnar_containerId,
       origin,
       host
-    )
+    ),
+    agent
   });
 
   if (!response.ok) {

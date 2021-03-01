@@ -1,3 +1,4 @@
+import consola from 'consola';
 import WebSocket from 'ws';
 import {
   Auth,
@@ -83,9 +84,11 @@ export function connect(userAuth?: RequiredAuth, agent?: any): Promise<Connectio
   return new Promise<Connection>(async (resolve, reject) => {
     const auth = userAuth
       ? buildAuthWithUserTokens(userAuth)
-      : await buildAuth();
+      : await buildAuth({ agent });
 
-    const server = new WebSocket(env.endpoint, buildWSOptions(auth, agent));
+    const options = buildWSOptions(auth, agent);
+    consola.debug(options);
+    const server = new WebSocket(env.endpoint, options);
 
     server.onopen = () => {
       resolve({
