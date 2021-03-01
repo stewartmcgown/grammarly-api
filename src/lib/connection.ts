@@ -1,4 +1,3 @@
-import consola from 'consola';
 import WebSocket from 'ws';
 import {
   Auth,
@@ -87,7 +86,6 @@ export function connect(userAuth?: RequiredAuth, agent?: WebSocket.ClientOptions
       : await buildAuth({ agent });
 
     const options = buildWSOptions(auth, agent);
-    consola.debug(options);
     const server = new WebSocket(env.endpoint, options);
 
     server.onopen = () => {
