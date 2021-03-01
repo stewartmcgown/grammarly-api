@@ -1,3 +1,4 @@
+import WebSocket from 'ws'
 import fetch from 'node-fetch';
 import {
   AuthHostOrigin,
@@ -32,7 +33,7 @@ export function getPlagiarismHostOrigin(): AuthHostOrigin {
  *
  * @author Stewart McGown
  */
-export async function plagiarism(text: string, agent?: any): Promise<PlagiarismResult> {
+export async function plagiarism(text: string, agent?: WebSocket.ClientOptions['agent']): Promise<PlagiarismResult> {
   const { Host, Origin } = getPlagiarismHostOrigin();
 
   const auth = await buildAuth({

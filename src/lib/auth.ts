@@ -1,3 +1,4 @@
+import WebSocket from 'ws'
 import fetch from 'node-fetch';
 import { buildCookieString, CookieOptions } from './connection';
 import env from './env';
@@ -41,7 +42,7 @@ export interface AuthRequestSettings {
   origin?: string;
   host?: string;
   authUrl?: string;
-  agent?: any;
+  agent?: WebSocket.ClientOptions['agent'];
 }
 
 //

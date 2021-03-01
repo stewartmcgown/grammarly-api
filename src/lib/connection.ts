@@ -65,7 +65,7 @@ export function buildWebsocketHeaders(Cookie: string): Headers {
 /**
  * Create the options needed for connecting to the remote Grammarly host.
  */
-export function buildWSOptions(auth: Auth, agent: any): WebSocket.ClientOptions {
+export function buildWSOptions(auth: Auth, agent?: WebSocket.ClientOptions['agent']): WebSocket.ClientOptions {
   const cookie = buildCookieString(getAuthCookies(auth));
 
   return {
@@ -80,7 +80,7 @@ export function buildWSOptions(auth: Auth, agent: any): WebSocket.ClientOptions 
  *
  * @param userAuth a custom user auth object
  */
-export function connect(userAuth?: RequiredAuth, agent?: any): Promise<Connection> {
+export function connect(userAuth?: RequiredAuth, agent?: WebSocket.ClientOptions['agent']): Promise<Connection> {
   return new Promise<Connection>(async (resolve, reject) => {
     const auth = userAuth
       ? buildAuthWithUserTokens(userAuth)
