@@ -177,3 +177,18 @@ const premium = new Grammarly({
 ```
 
 Your own personal AuthTokens can be found by inspecting the Firefox extension and looking at the `Cookies` tab.
+
+
+#### Using a custom http Agent
+
+If you need to support your own proxy, you can define your own [agent (doc)](https://nodejs.org/api/http.html#http_new_agent_options) for the requests.
+ex:
+```js
+import ProxyAgent from 'proxy-agent';
+
+new Grammarly({
+  agent: new ProxyAgent(process.env.http_proxy)
+});
+```
+
+It's going to use it for all the requests made by the lib (websockets + fetch);
