@@ -12,8 +12,9 @@ describe('api tests', () => {
     const server = new Grammarly();
 
     const response = await server.analyse('hello worlds!');
-
-    expect(response.alerts.length).toBe(1);
+    // a hidden alert as we start with hello instead of Hello
+    // We should use a comma after hello
+    expect(response.alerts.length).toBe(2);
 
     done();
   });

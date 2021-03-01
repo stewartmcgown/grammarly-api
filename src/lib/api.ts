@@ -23,6 +23,7 @@ export interface GrammarlyOptions {
   password?: string;
 
   auth?: RequiredAuth;
+  agent?: any
 }
 
 /**
@@ -107,7 +108,7 @@ export class Grammarly {
   private async establish(): Promise<BaseMessage> {
     consola.debug('Re-establishing connection.');
 
-    const { connection } = await connect(this.options.auth);
+    const { connection } = await connect(this.options.auth, this.options.agent);
 
     this.connection = connection;
 

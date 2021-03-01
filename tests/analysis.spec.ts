@@ -8,11 +8,11 @@ describe('further analysis of results', () => {
   Must giev us pause - their's the respect
   That makes clamity of so long life.`;
 
+    const { corrected } = await new Grammarly().analyse(text).then(correct);
+
     const correctText = `When we have shuffled off this mortal coil,
   Must give us pause - their's the respect
   That makes calamity of so long life.`;
-
-    const { corrected } = await new Grammarly().analyse(text).then(correct);
 
     expect(corrected).toEqual(correctText);
   });
