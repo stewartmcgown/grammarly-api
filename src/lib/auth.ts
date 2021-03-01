@@ -185,7 +185,7 @@ export async function buildAuth({
   host,
   authUrl,
   agent,
-}: AuthRequestSettings): Promise<Auth> {
+}: AuthRequestSettings = {}): Promise<Auth> {
   const gnar_containerId = generateContainerId();
   const redirect_location = generateRedirectLocation();
 
