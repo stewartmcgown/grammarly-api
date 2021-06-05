@@ -53,6 +53,10 @@ This library uses a Promise-based return system, so you will receive all the cor
 }
 ```
 
+There are two more optional arguments for `analyze`: `timeout` and `dialect`.
+* `timeout` is the number of milliseconds to wait before timing out. Defaults to 5000.
+* `dialect` is the dialect of English to use: `'american'` or `'british'`. Defaults to `'british'`.
+
 ### Correct results
 
 ```js
