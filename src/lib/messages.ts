@@ -114,7 +114,7 @@ export const stringToTransform = (str: string, pos?: string) => {
   return `+0:${pos || '0'}:${str}:0`;
 };
 
-export const buildInitialMessage = (dialect?: 'american' | 'british' = 'british'): InfoMessage => ({
+export const buildInitialMessage = (dialect: 'american' | 'british' = 'british'): InfoMessage => ({
   type: 'initial',
   docid: uuid.v4(),
   client: 'extension_chrome',
