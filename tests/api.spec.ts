@@ -28,4 +28,14 @@ describe('api tests', () => {
 
     done();
   });
+  
+  it('use a different dialect', async done => {
+    const server = new Grammarly();
+
+    const response = await server.analyse('Hello.', 5000, 'american');
+
+    expect(response.result.dialect).toBe('american');
+    
+    done();
+  });
 });
