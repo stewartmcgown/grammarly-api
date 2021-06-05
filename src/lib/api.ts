@@ -31,6 +31,7 @@ export interface GrammarlyOptions {
  */
 export class Grammarly {
   private connection!: WebSocket;
+  private dialect: 'british';
 
   private get isEstablished(): boolean {
     return (
@@ -47,13 +48,15 @@ export class Grammarly {
    *
    * @param text text to analyse
    * @param timeout how long to wait before we stop collecting results
+   * @param dialect dialect to use
    */
   public async analyse(
     text: string,
-    timeout: number = 30000
+    timeout: number = 30000,
+    dialect: 'american' | 'british' = 'british'
   ): Promise<GrammarlyResult> {
-    if (!this.isEstablished) {
-      await this.establish();
+    if (!this.isEstablished || dialect !== this.dialect) {
+      await this.establish(dialect);
     }
 
     consola.debug('Successfully connected to Grammarly!');
@@ -102,17 +105,18 @@ export class Grammarly {
   /**
    * Establish communication with the Grammarly API.
    *
+   * @param dialect to use
    * @returns the initial response message
    * @throws {Object} if cookies are bad
    */
-  private async establish(): Promise<BaseMessage> {
+  private async establish(dialect: 'american' | 'british' = 'british'): Promise<BaseMessage> {
     consola.debug('Re-establishing connection.');
 
     const { connection } = await connect(this.options.auth, this.options.agent);
 
     this.connection = connection;
 
-    this.connection.send(JSON.stringify(buildInitialMessage()));
+    this.connection.send(JSON.stringify(buildInitialMessage(dialect)));
 
     consola.debug('Sent establishing message');
 
