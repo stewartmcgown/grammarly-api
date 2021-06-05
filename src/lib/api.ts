@@ -31,7 +31,7 @@ export interface GrammarlyOptions {
  */
 export class Grammarly {
   private connection!: WebSocket;
-  private dialect: 'british';
+  private dialect: 'american' | 'british';
 
   private get isEstablished(): boolean {
     return (
