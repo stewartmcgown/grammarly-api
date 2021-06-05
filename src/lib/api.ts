@@ -117,6 +117,7 @@ export class Grammarly {
     this.connection = connection;
 
     this.connection.send(JSON.stringify(buildInitialMessage(dialect)));
+    this.dialect = dialect
 
     consola.debug('Sent establishing message');
 
