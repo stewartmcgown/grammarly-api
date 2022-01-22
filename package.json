@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "consola": "^2.10.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "uuid": "^3.3.2",
     "ws": "^7.1.2"
   },
