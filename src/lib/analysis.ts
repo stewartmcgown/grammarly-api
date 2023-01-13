@@ -34,11 +34,11 @@ export function applyTransform(
 
   const substringToTransform = text.substring(alert.begin, alert.end);
 
-  const transformed = replacement
+  const transformed = replacement || replacement === ""
     ? text.substring(0, alert.begin) + replacement + text.substring(alert.end)
     : text;
 
-  const diff = replacement
+  const diff = replacement || replacement === ""
     ? replacement.length - substringToTransform.length
     : 0;
 
@@ -92,7 +92,10 @@ export function correct(result: GrammarlyResult): GrammarlyResult {
 
     // Apply diff to every appropriate part of the following alerts
     prev.alerts.forEach((tbd, i) => {
-      prev.alerts[i] = updateAlert(tbd, diff);
+      // adding or removing of sub-string will affect only strings which are ahead of sub-string
+      if (currentAlert.begin < tbd.begin) {
+        prev.alerts[i] = updateAlert(tbd, diff);
+      }
     });
 
     return {
