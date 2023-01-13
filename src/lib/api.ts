@@ -31,7 +31,7 @@ export interface GrammarlyOptions {
  */
 export class Grammarly {
   private connection!: WebSocket;
-  private dialect: 'american' | 'british';
+  private dialect!: 'american' | 'british';
 
   private get isEstablished(): boolean {
     return (
@@ -41,7 +41,7 @@ export class Grammarly {
     );
   }
 
-  constructor(private options: GrammarlyOptions = {}) {}
+  constructor(private options: GrammarlyOptions = {}) { }
 
   /**
    * Analyse some text
